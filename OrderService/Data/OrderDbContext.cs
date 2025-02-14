@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OrderService.Models;
 
 namespace OrderService.Data
 {
@@ -9,6 +10,7 @@ namespace OrderService.Data
         }
 
         // Define DbSets for your entities here
-        // public DbSet<Order> Orders { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<orderdata> OrderData { get; set; }
     }
 }

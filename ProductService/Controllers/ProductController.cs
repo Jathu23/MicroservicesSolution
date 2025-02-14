@@ -25,35 +25,31 @@ namespace ProductService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            //return Ok(await _context.Products.ToListAsync());
-            return Ok("message from GetProducts");
+            return Ok(await _context.Products.ToListAsync());
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct([FromForm] int number)
+        public async Task<IActionResult> AddProduct(Product product)
         {
-            //_context.Products.Add(product);
-            //await _context.SaveChangesAsync();
-            //return CreatedAtAction(nameof(GetProducts), new { id = product.Id }, product);
+            _context.Products.Add(product);
+            var result = await _context.SaveChangesAsync();
 
-            return Ok("message from GetProducts post" + number);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetProductWithOrders(int id)
-        {
-            var product = new { Id = id, Name = "Sample Product" };
-
-            // 👇 Call OrderService API
-            var ordersResponse = await _httpClient.GetAsync($"https://localhost:7180/api/Order/{id}");
-            if (!ordersResponse.IsSuccessStatusCode)
+            if (result == 1)
             {
-                return BadRequest("Failed to fetch orders");
+                return Ok(product);
             }
-
-            var orders = await ordersResponse.Content.ReadAsStringAsync();
-
-            return Ok(new { Product = product, Orders = orders });
+            return Ok("error");
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProduct(int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
         }
     }
 

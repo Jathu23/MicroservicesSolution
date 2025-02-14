@@ -12,6 +12,8 @@
             "UpstreamPathTemplate": "/products/{id}",
             "UpstreamHttpMethod": [ "Get" ]
         },
+
+
         {
             "DownstreamPathTemplate": "/api/Product",
             "DownstreamScheme": "https",
@@ -24,8 +26,10 @@
             "UpstreamPathTemplate": "/products",
             "UpstreamHttpMethod": [ "Get", "Post" ]
         },
+
+
         {
-            "DownstreamPathTemplate": "/api/Order/{id}",
+            "DownstreamPathTemplate": "/api/Order/{productId}",
             "DownstreamScheme": "https",
             "DownstreamHostAndPorts": [
                 {
@@ -34,7 +38,7 @@
                 }
             ],
             "UpstreamPathTemplate": "/orders/{id}",
-            "UpstreamHttpMethod": [ "Get" ]
+            "UpstreamHttpMethod": "*" 
         },
         {
             "DownstreamPathTemplate": "/api/Order",
@@ -46,7 +50,7 @@
                 }
             ],
             "UpstreamPathTemplate": "/orders",
-            "UpstreamHttpMethod": [ "Get", "Post" ]
+            "UpstreamHttpMethod": "*" 
         }
     ]
 }
