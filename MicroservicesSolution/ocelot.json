@@ -28,6 +28,21 @@
         },
 
 
+
+        {
+            "DownstreamPathTemplate": "/api/Product/create",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 7011
+                }
+            ],
+            "UpstreamPathTemplate": "/products/rabitmq",
+            "UpstreamHttpMethod": [ "Get", "Post" ]
+        },
+
+
         {
             "DownstreamPathTemplate": "/api/Order/{productId}",
             "DownstreamScheme": "https",

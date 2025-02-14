@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace ProductService.Controllers
 {
     using System.Net.Http;
+    using Common.Contracts;
+    using MassTransit;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using ProductService.Data;
@@ -15,11 +17,12 @@ namespace ProductService.Controllers
     {
         private readonly ProductDbContext _context;
         private readonly HttpClient _httpClient;
-
-        public ProductController(ProductDbContext context, HttpClient httpClient)
+        private readonly IPublishEndpoint _publishEndpoint;
+        public ProductController(ProductDbContext context, HttpClient httpClient,IPublishEndpoint publishEndpoint)
         {
             _context = context;
             _httpClient = httpClient;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet]
@@ -50,6 +53,24 @@ namespace ProductService.Controllers
                 return NotFound();
             }
             return Ok(product);
+        }
+
+
+
+
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateProduct( Product product)
+        {
+            await _publishEndpoint.Publish<IProductCreated>(new
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                Stock = product.Stock
+
+            });
+
+            return Ok("Product Created and Event Published!");
         }
     }
 
