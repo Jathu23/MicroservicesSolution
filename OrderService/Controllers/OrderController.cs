@@ -118,7 +118,7 @@ namespace OrderService.Controllers
 
             // Convert response to object
             var product = await response.Content.ReadFromJsonAsync<object>();
-
+            
             // Save order in database
             _ordercontext.Orders.Add(order);
             await _ordercontext.SaveChangesAsync();
